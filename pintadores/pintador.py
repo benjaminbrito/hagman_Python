@@ -1,4 +1,4 @@
-def figura(body):
+def figura(body, letras):
     print("""     __________
     |          |
     |          |
@@ -7,7 +7,7 @@ def figura(body):
     |         """+ body[2] + """
     |          
     |          
- ___|___""")
+ ___|___     """  +  " ".join(letras))
     
 def cuerpoInicial():
      body = ["","",""]
@@ -18,13 +18,13 @@ def cambairCuerpo(error,body):
     if error == 1:
         body[0]='O'
     elif error ==2:
-        pass
+        body[1]=' |'
     elif error ==3:
-        body[1]='/'
-    elif error ==4:
         body[1]='/|'
-    elif error ==5:
+    elif error ==4:
         body[1]='/|\\'
+    elif error ==5:
+        body[2]='/'
     elif error ==6:
         body[2]='/ \\'
     return body

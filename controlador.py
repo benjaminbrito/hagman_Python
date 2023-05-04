@@ -2,61 +2,78 @@ from pintadores import pintador
 from tools import herramientas
 import operator
 
-def inicio():
+palabra="" 
+letra= ""
+body = ""
+letras = []
+
+def inicio(): 
+    global letra
     error = 0
-    aciertos = 0
     body = pintador.cuerpoInicial()
-    palabra = 'HOLA'
-    letras = definirletras(palabra)
+    palabrasRandom()
+    definirletras()
     print(herramientas.aleatoria(3))
     
     print('Bienvenido a Hangman')
-    while(error <7 and operator.not_(termino(aciertos, palabra))):
-        pintador.figura(body)
-        print ("           " +"".join(letras))
-        letra = input("Ingrese una leta: ")
+    while(error < 6 and operator.not_( termino())):
+        pintador.figura(body, letras)
+        letra = input("Ingrese una letra: ")
         letra = herramientas.validarLetra(letra)
-        if adivino(letra, palabra, letras):
-            print("adivinaste")
-            aciertos+=1
+        if yaHaAdivinado():
+            print("ya has adivinado esta Letra")
         else:
-            error+=1
-        
+            if adivino():
+                print("adivinaste")
+            else:
+                print("Xx__FALLASTE__xX")
+                error+=1
         body = pintador.cambairCuerpo(error,body)
-    
-    pintador.figura(body)
-    print ("           " +"".join(letras))
+    pintador.figura(body, letras)
 
-    if(error == 7):
-        print("perdiste")
-    elif(adivino(letra, palabra, letras)):
+    if(error == 6):
+        print("PERDISTE. La palabra era " + palabra)
+    elif(adivino()):
         print("adivinaste")
 
+def yaHaAdivinado():
+    i=0
+    for caracter in letras:
+        if caracter== letra:
+            return True
+        i+=1
+    return False
 
-def adivino(letra, palabra, letras):
+def adivino():
     for caracter in palabra:
         if caracter == letra:
-            mostraLetra(palabra,letra, letras)
+            mostraLetra()
             return True
     return False
 
-def termino(aciertos, palabra):
-    if aciertos < len(palabra):
-        return False
-    elif aciertos == len(palabra):
+def termino():
+    if "".join(letras)==palabra:
         return True
-    
-def mostraLetra(palabra,letra, letras):
+    else:
+        return False
+
+def mostraLetra():
     contador = 0
     for caracter in palabra:
         if caracter == letra:
-            letras[contador] =caracter + " "
+            letras[contador] =caracter
         contador +=1 
 
-def definirletras(palabra):
-    letras=[]
+def definirletras():
+    global letras
     for i in range(0,len(palabra)):
-        letras.append("_ ") 
-    return letras
+       letras.append("_")
+
+def palabrasRandom():
+    global palabra
+    palabras = ['HOLA',"QUIEN","GATO","GALGO","PAPA"]
+    palabra = palabras[herramientas.aleatoria(len(palabras))]
+    print("la palabra es " + palabra)
+    return palabra
 
 
